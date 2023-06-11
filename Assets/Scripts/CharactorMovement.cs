@@ -45,6 +45,7 @@ public class CharactorMovement : MonoBehaviour
     private float verticalVelocity = -0.1f;                             // 垂直重力
     private CharacterController characterController;                    // 腳本控制
     private CapsuleCollider capsuleCollider;                            // 碰撞體
+    private Animator animator;
     private float capsuleHeight;                                        // 碰撞體高度
     private Vector3 capsuleCenter;                                      // 碰撞體xyz
     private Vector3 groundNormal = Vector3.up;                          // 新增新的 Vector3
@@ -60,6 +61,7 @@ public class CharactorMovement : MonoBehaviour
         capsuleHeight = capsuleCollider.height;
         // 抓取碰撞體 xyz
         capsuleCenter = capsuleCollider.center;
+        animator = GetComponent<Animator>();
     }
 
     private void SetMoveDirection(bool isRight)
@@ -115,6 +117,7 @@ public class CharactorMovement : MonoBehaviour
         {
             verticalVelocity -= (gravity * Time.deltaTime);
         }
+        animator.SetBool("IsGround", CheckGrounded());
     }
 
     // 確定角色是否在地上
@@ -155,7 +158,7 @@ public class CharactorMovement : MonoBehaviour
             rollElapsedTime = 0f;
             isRolling = false;
         }
-
+        animator.SetBool("IsRolling", isRolling);
     }
 
     private void Update()
