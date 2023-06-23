@@ -44,7 +44,6 @@ public class CharactorMovement : MonoBehaviour
     // 確保角色一直接觸到地板
     private float verticalVelocity = -0.1f;                             // 垂直重力
     private CharacterController characterController;                    // 腳本控制
-    private CapsuleCollider capsuleCollider;                            // 碰撞體
     private Animator animator;
     private float capsuleHeight;                                        // 碰撞體高度
     private Vector3 capsuleCenter;                                      // 碰撞體xyz
@@ -56,11 +55,10 @@ public class CharactorMovement : MonoBehaviour
     {
         // 抓取元件
         characterController = GetComponent<CharacterController>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
         // 抓取碰撞體高度
-        capsuleHeight = capsuleCollider.height;
+        capsuleHeight = characterController.height;
         // 抓取碰撞體 xyz
-        capsuleCenter = capsuleCollider.center;
+        capsuleCenter = characterController.center;
         animator = GetComponent<Animator>();
     }
 
@@ -144,8 +142,8 @@ public class CharactorMovement : MonoBehaviour
             rollElapsedTime = 0f;
             isRolling = true;
             // 如果正在滾動 縮小碰撞體
-            capsuleCollider.height = targetCapsuleHeight;
-            capsuleCollider.center = targetCapsuleCenter;
+            characterController.height = targetCapsuleHeight;
+            characterController.center = targetCapsuleCenter;
         }
         // 計時秒數
         rollElapsedTime += Time.deltaTime;
@@ -153,8 +151,8 @@ public class CharactorMovement : MonoBehaviour
         // 重置所有值 (秒數到，回歸正常大小)
         if(rollElapsedTime>= rollingTime && isRolling)
         {
-            capsuleCollider.height = targetCapsuleHeight;
-            capsuleCollider.center = targetCapsuleCenter;
+            characterController.height = targetCapsuleHeight;
+            characterController.center = targetCapsuleCenter;
             rollElapsedTime = 0f;
             isRolling = false;
         }
